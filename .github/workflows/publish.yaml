@@ -10,30 +10,50 @@ on:
 jobs:
 
   build:
-    runs-on: ${{ matrix.os }}
-    
-
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
 
     steps:
+    - name: Prepare
+      run: |
+        ls
+        apt update
+        apt install git tar -y
+        tar -C /usr/local -xzf go1.22.4.linux-amd64.tar.gz
+        export PATH=$PATH:/usr/local/go/bin
+        go version
 
-    - name: Checkout
-      uses: action/checkout@v4
-      with:
-        path: nexus-helm-push
+    - name: Pull
+      run: |
+        ls
+        git clone https://github.com/fruitgum/nexus-helm-push.git
 
-    - name: Setup
-      uses: action/setup-go@v5
-      with:
-        go-version-file: "nexus-helm-push/go.mod"
-        architecture: "x64"
-  
     - name: Build
       run: |
         ls
+        cd nexus-helm-push
         go mod tidy
         go build
-        ls
+        EXPORT GOOS=windows
+        go build -o nexus-helm-push.exe
+
+    - name: Upload-Windows
+      uses: actions/upload-artifact@v4+
+      with:
+        name: nexus-helm-push.exe
+        path: nexus-helm-push/nexus-helm-push.exe
+        compression-level: 0
+        overwrite: true
+
+    - name: Upload-Linux
+      uses: actions/upload-artifact@v4+
+      with:
+        name: nexus-helm-push
+        path: nexus-helm-push/nexus-helm-push
+        compression-level: 0
+        overwrite: true
         
+  
+
