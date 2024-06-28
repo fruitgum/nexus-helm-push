@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"nexus-helm-push/archive"
-	"nexus-helm-push/logging"
-	"nexus-helm-push/server"
+	"github.com/fruitgum/nexus-helm-push/archive"
+	"github.com/fruitgum/nexus-helm-push/logging"
+	"github.com/fruitgum/nexus-helm-push/server"
 	"os"
 	"path/filepath"
 	"strings"
