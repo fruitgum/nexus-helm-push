@@ -28,7 +28,7 @@ jobs:
         cd nexus-helm-push
         go mod tidy
         go build -o nexus-helm-push
-        EXPORT GOOS=windows
+        export GOOS=windows
         go build -o nexus-helm-push.exe
 
     - name: Upload-Windows
