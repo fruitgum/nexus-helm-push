@@ -10,19 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: alpine:latest
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
 
     steps:
     - name: Prepare
       run: |
-        
         apk update
-        apk add tar git wget
-        wget https://go.dev/dl/go1.22.4.linux-amd64.tar.gz
-        tar -C /usr/local -xzf go1.22.4.linux-amd64.tar.gz
-        export PATH=$PATH:/usr/local/go/bin
+        apk add go git
         go version
 
     - name: Pull
