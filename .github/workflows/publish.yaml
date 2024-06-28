@@ -1,11 +1,8 @@
 on:
-  pull_request:
-    branches:
-      - main
+  push:
+    tags:
+      - '*'
   workflow_dispatch:
-
-
-
 
 jobs:
 
@@ -40,7 +37,7 @@ jobs:
         go build -o nexus-helm-push.exe
 
     - name: Upload-Windows
-      uses: actions/upload-artifact@v4+
+      uses: actions/upload-artifact@v4
       with:
         name: nexus-helm-push.exe
         path: nexus-helm-push/nexus-helm-push.exe
@@ -48,7 +45,7 @@ jobs:
         overwrite: true
 
     - name: Upload-Linux
-      uses: actions/upload-artifact@v4+
+      uses: actions/upload-artifact@v4
       with:
         name: nexus-helm-push
         path: nexus-helm-push/nexus-helm-push
