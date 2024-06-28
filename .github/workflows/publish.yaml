@@ -1,0 +1,38 @@
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.20
+
+    - name: Build
+      run: |
+        if [ ${{ matrix.os }} == 'windows-latest' ]; then
+          GOOS=windows GOARCH=amd64 go build -o ${{ github.repository }}
+        else
+          GOOS=linux GOARCH=amd64 go build -o ${{ github.repository }}
+        fi
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ github.repository }}-${{ matrix.os }}
+        path: |
+          ${{ github.repository }}
+          ${{ github.repository }}.exe
