@@ -6,34 +6,33 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: golang:alpine3.20
 
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: 1.22
+    - name: Checkout
+      uses: actions/checkout@v4
 
     - name: Build
-      run: |
-        GOPATH=/opt/hostedtoolcache/go/1.2.2/x64/src/pkg/github.com/fruitgum/nexus-helm-push/
+      run: | 
+        cd ${{ github.repository }}
         if [ ${{ matrix.os }} == 'windows-latest' ]; then
-          GOOS=windows GOARCH=amd64 go build -o ${{ github.repository }}
+          GOOS=windows GOARCH=amd64 go build 
         else
-          GOOS=linux GOARCH=amd64 go build -o ${{ github.repository }}
+          GOOS=linux GOARCH=amd64 go build 
         fi
 
-    - name: Upload Build Artifact
+    - name: Upload Win Binary
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ github.repository }}-${{ matrix.os }}
-        path: |
-          ${{ github.repository }}
-          ${{ github.repository }}.exe
+        name: ${{ github.repository }}.exe
+        path: /go/${{ github.repository }}.exe
+        
+    - name: Upload Linux Binary
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ github.repository }}
+        path: /go/${{ github.repository }}
