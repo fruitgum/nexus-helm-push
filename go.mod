@@ -1,4 +1,4 @@
-module nexus-helm-push
+module github.com/fruitgum/nexus-helm-push
 
 go 1.22.4
 
