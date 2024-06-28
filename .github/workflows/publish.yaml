@@ -14,12 +14,15 @@ jobs:
         os: [ubuntu-latest, windows-latest]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - name: Pull
+      run: |
+        apk update 
+        apk add git
+        git clone https://github.com/fruitgum/nexus-helm-push.git
 
     - name: Build
       run: | 
-        cd ${{ github.repository }}
+        cd nexus-helm-push
         if [ ${{ matrix.os }} == 'windows-latest' ]; then
           GOOS=windows GOARCH=amd64 go build 
         else
@@ -29,11 +32,11 @@ jobs:
     - name: Upload Win Binary
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ github.repository }}.exe
-        path: /go/${{ github.repository }}.exe
+        name: nexus-helm-push.exe
+        path: /go/nexus-helm-push.exe
         
     - name: Upload Linux Binary
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ github.repository }}
-        path: /go/${{ github.repository }}
+        name: nexus-helm-push
+        path: /go/nexus-helm-push
