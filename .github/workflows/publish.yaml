@@ -6,7 +6,8 @@ on:
 
 jobs:
   build:
-    runs-on: golang:alpine3.20
+    runs-on: self-hosted
+    container:  golang:alpine3.20
 
     strategy:
       matrix:
