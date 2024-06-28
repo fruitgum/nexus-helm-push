@@ -4,39 +4,36 @@ on:
       - main
   workflow_dispatch:
 
+
+
+
 jobs:
+
   build:
-    runs-on: self-hosted
-    container:  golang:alpine3.20
+    runs-on: ${{ matrix.os }}
+    
 
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
 
     steps:
-    - name: Pull
-      run: |
-        apk update 
-        apk add git
-        git clone https://github.com/fruitgum/nexus-helm-push.git
 
+    - name: Checkout
+      uses: action/checkout@v4
+      with:
+        path: nexus-helm-push
+
+    - name: Setup
+      uses: action/setup-go@v5
+      with:
+        go-version-file: "nexus-helm-push/go.mod"
+        architecture: "x64"
+  
     - name: Build
-      run: | 
-        cd nexus-helm-push
-        if [ ${{ matrix.os }} == 'windows-latest' ]; then
-          GOOS=windows GOARCH=amd64 go build 
-        else
-          GOOS=linux GOARCH=amd64 go build 
-        fi
-
-    - name: Upload Win Binary
-      uses: actions/upload-artifact@v3
-      with:
-        name: nexus-helm-push.exe
-        path: /go/nexus-helm-push.exe
+      run: |
+        ls
+        go mod tidy
+        go build
+        ls
         
-    - name: Upload Linux Binary
-      uses: actions/upload-artifact@v3
-      with:
-        name: nexus-helm-push
-        path: /go/nexus-helm-push
