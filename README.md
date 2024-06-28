@@ -13,5 +13,5 @@
 git clone https://github.com/fruitgum/nexus-helm-push.git
 cd nexus-helm-push
 go build
-./nexus-helm-push -username admin -password admin -url https://nexus.here -chart /path/to/chart.tgz -repo my-awsome-nexus-helm-repo
+./nexus-helm-push
 ```
