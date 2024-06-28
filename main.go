@@ -99,7 +99,7 @@ func main() {
 		return
 	}
 
-	logging.Info("Uploading " + *chartName + " to " + *repo)
+	logging.Info("Uploading " + *chartName + " to " + *repo + "repo")
 	upload, success := server.Upload(*username, *password, *url, *repo, *chart)
 
 	if success != true {
