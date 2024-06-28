@@ -8,51 +8,48 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    container:
+      image: alpine:latest
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
 
     steps:
-    # - name: Prepare
-    #   run: |
-    #     ls
-    #     apt update
-    #     apt install git tar -y
-    #     tar -C /usr/local -xzf go1.22.4.linux-amd64.tar.gz
-    #     export PATH=$PATH:/usr/local/go/bin
-    #     go version
-
-    # - name: Pull
-    #   run: |
-    #     ls
-    #     git clone https://github.com/fruitgum/nexus-helm-push.git
-
-    # - name: Build
-    #   run: |
-    #     ls
-    #     cd nexus-helm-push
-    #     go mod tidy
-    #     go build
-    #     EXPORT GOOS=windows
-    #     go build -o nexus-helm-push.exe
-
-    # - name: Upload-Windows
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: nexus-helm-push.exe
-    #     path: nexus-helm-push/nexus-helm-push.exe
-    #     compression-level: 0
-    #     overwrite: true
-
-    # - name: Upload-Linux
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: nexus-helm-push
-    #     path: nexus-helm-push/nexus-helm-push
-    #     compression-level: 0
-    #     overwrite: true
-        
-    - name: Wtf
+    - name: Prepare
       run: |
-        docker version
+        
+        apk update
+        apk add tar git bash shadow
+        chsh root -s bash
+        tar -C /usr/local -xzf go1.22.4.linux-amd64.tar.gz
+        export PATH=$PATH:/usr/local/go/bin
+        go version
 
+    - name: Pull
+      run: |
+        git clone https://github.com/fruitgum/nexus-helm-push.git
+
+    - name: Build
+      run: |
+        ls
+        cd nexus-helm-push
+        go mod tidy
+        go build -o nexus-helm-push
+        EXPORT GOOS=windows
+        go build -o nexus-helm-push.exe
+
+    - name: Upload-Windows
+      uses: actions/upload-artifact@v4
+      with:
+        name: nexus-helm-push.exe
+        path: nexus-helm-push/nexus-helm-push.exe
+        compression-level: 0
+        overwrite: true
+
+    - name: Upload-Linux
+      uses: actions/upload-artifact@v4
+      with:
+        name: nexus-helm-push
+        path: nexus-helm-push/nexus-helm-push
+        compression-level: 0
+        overwrite: true
