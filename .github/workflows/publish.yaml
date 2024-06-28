@@ -23,6 +23,8 @@ jobs:
 
     - name: Build
       run: |
+        GOPATH=/opt/hostedtoolcache/go/1.2.2/x64/src/pkg/github.com/fruitgum/nexus-helm-push/
+        go mod tidy
         if [ ${{ matrix.os }} == 'windows-latest' ]; then
           GOOS=windows GOARCH=amd64 go build -o ${{ github.repository }}
         else
