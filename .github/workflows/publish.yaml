@@ -3,6 +3,8 @@ on:
     tags:
       - '*'
   workflow_dispatch:
+    inputs:
+      tags:
 
 jobs:
 
@@ -15,7 +17,7 @@ jobs:
     - name: Prepare
       run: |
         apk update
-        apk add go git
+        apk add go git github-cli
         go version
 
     - name: Pull
@@ -38,6 +40,14 @@ jobs:
         path: nexus-helm-push/nexus-helm-push.exe
         compression-level: 0
         overwrite: true
+
+    - name: Release-Windows
+      uses: ncipollo/release-action@v1.14
+      with:
+         artifacts: "nexus-helm-push.exe, nexus-helm-push"
+         token: ${{ secrets.RELEASETOKEN }}
+        
+        
 
     - name: Upload-Linux
       uses: actions/upload-artifact@v4
