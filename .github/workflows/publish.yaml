@@ -33,26 +33,27 @@ jobs:
         export GOOS=windows
         go build -o nexus-helm-push.exe
 
-    - name: Upload-Windows
-      uses: actions/upload-artifact@v4
-      with:
-        name: nexus-helm-push.exe
-        path: nexus-helm-push/nexus-helm-push.exe
-        compression-level: 0
-        overwrite: true
 
-    - name: Release-Windows
-      uses: ncipollo/release-action@v1.14
+    - name: Release
+      uses: ncipollo/release-action@v1.14.0
       with:
-         artifacts: "nexus-helm-push.exe, nexus-helm-push"
+         artifacts: "nexus-helm-push/nexus-helm-push.exe, nexus-helm-push/nexus-helm-push"
          token: ${{ secrets.RELEASETOKEN }}
         
-        
 
-    - name: Upload-Linux
-      uses: actions/upload-artifact@v4
-      with:
-        name: nexus-helm-push
-        path: nexus-helm-push/nexus-helm-push
-        compression-level: 0
-        overwrite: true
+    # - name: Upload-Windows
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: nexus-helm-push.exe
+    #     path: nexus-helm-push/nexus-helm-push.exe
+    #     compression-level: 0
+    #     overwrite: true
+      
+
+    # - name: Upload-Linux
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: nexus-helm-push
+    #     path: nexus-helm-push/nexus-helm-push
+    #     compression-level: 0
+    #     overwrite: true
